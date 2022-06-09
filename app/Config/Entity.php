@@ -9,6 +9,6 @@ class Entity
      */
     public static function register()
     {
-        
+        return APPPATH . 'Entities/Mapping';
     }
 }

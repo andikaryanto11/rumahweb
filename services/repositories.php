@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Repositories\UserRepository;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -9,4 +9,5 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 return function (ContainerBuilder $containerBuilder) {
 
+    $containerBuilder->register('user.repository', UserRepository::class);
 };

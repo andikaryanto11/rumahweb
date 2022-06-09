@@ -1,0 +1,24 @@
+App\Entities\User:
+  table: '-'
+  primaryKey: 'Id'
+  props: 
+    id: 
+        type: 'string'
+        isEntity: false
+    title: 
+        type: 'string'
+        isEntity: false
+    firstName: 
+        type: 'string'
+        isEntity: false
+    lastName: 
+        type: 'string'
+        isEntity: false
+    email:
+        type: 'string'
+        isEntity: false
+    picture: 
+        type: 'string'
+        isEntity: false
+        
+    
