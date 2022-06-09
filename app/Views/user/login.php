@@ -16,7 +16,7 @@
             <img src="<?= base_url('assets/images/logo.png') ?>" width="160" class="img-fluid" alt="">
         </div> -->
         
-        <h4 class="my-4">Register User</h4>
+        <h4 class="my-4">Login User</h4>
 
         <form action="<?= base_url('user/do_register')?>" method="POST">
             <div class="form-inline-group left-i mb-3">
@@ -27,12 +27,13 @@
                 <i class="icon-icon-awesome-lock in-left"></i>
                 <input type="password" class="form-control" placeholder="Password" name = "password">
             </div>
-            <button type="submit" class="btn btn-primary px-5 mt-4">Register</button>
+            <button type="submit" class="btn btn-primary px-5 mt-4">Login</button>
         </form>
     </div>
 </body>
 
 </html>
+
 <script type="text/javascript" src="<?= base_url('assets/js/popper.min.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('assets/js/select2.full.min.js') ?>"></script>

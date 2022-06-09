@@ -16,7 +16,8 @@ class BaseRepository extends Repository {
      */
     private function fetch(string $path, array $filter = [], $columns = [], $stdClass = false, &$associated = []){
 
-        $curl = new CurlLib(self::DUMMYAPI_URL . $path);
+        $query = "?" . http_build_query($filter);
+        $curl = new CurlLib(self::DUMMYAPI_URL . $path . $query);
         $curl->method('GET');
         $curl->httpVersion();
         $curl->addHeader('app-id', self::DUMMYAPI_APP_ID);
@@ -41,7 +42,7 @@ class BaseRepository extends Repository {
                 // if (!is_null($result->$key)) {
                 $method = 'set' . $key;
                 if (!$value['isEntity']) {
-                    if (!is_null($result->$key)) {
+                    if (isset($result->$key) && !is_null($result->$key)) {
                         if ($value['type'] != 'DateTime') {
                             if ($value['type'] == 'boolean') {
                                 $obj->$method((bool)$result->$key);

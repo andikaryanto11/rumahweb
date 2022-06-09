@@ -6,10 +6,14 @@ use App\Entities\User as EntitiesUser;
 use App\Repositories\UserRepository;
 use Ci4Common\Services\ViewCollectionService;
 use App\Override\Request;
+use Ci4Common\Libraries\RedirectLib;
 use Ci4Common\Libraries\SessionLib;
 
 class User extends BaseController
 {
+
+    public const SUCCESS_KEY_MESSAGE = 'success_msg';
+    public const WARNING_KEY_MESSAGE = 'add_warning_msg';
 
     /**
      * @var UserRepository $userRepository
@@ -37,14 +41,25 @@ class User extends BaseController
         $this->validator = \Config\Services::validation();
     }
 
-    public function index()
+    public function index(Request $request)
     {   
-        $users = $this->userRepository->get('user');
-        foreach($users as $user){
-            echo $user->getId();
+        if(!SessionLib::get('user')){
+            return RedirectLib::redirect('user/login');
         }
-        // $this->viewCollectionService->addView(view('welcome_message'));
-        // return $this->viewCollectionService;
+        $page = $request->getGet('page') != null ? $request->getGet('page') : 1;
+        $limit = $request->getGet('limit') != null ? $request->getGet('limit') : 20;
+        $param = [
+            'page' => $page,
+            'limit' => $limit,
+        ];
+        $users = $this->userRepository->get('user', $param);
+        // foreach($users as $user){
+        //     echo $user->getId();
+        // }
+        $this->viewCollectionService->addView(view('shared/header'));
+        $this->viewCollectionService->addView(view('user/index', compact('users')));
+        $this->viewCollectionService->addView(view('shared/footer'));
+        return $this->viewCollectionService;
     }
 
     /**
@@ -53,7 +68,36 @@ class User extends BaseController
      * @return ViewCollectionService
      */
     public function register(){
+        
         $this->viewCollectionService->addView(view('user/register'));
+        return $this->viewCollectionService;
+    }
+
+    /**
+     * GET user/login
+     *
+     * @return ViewCollectionService
+     */
+    public function login(Request $request){
+
+        if(SessionLib::get('user')){
+            return RedirectLib::redirect('user');
+        }
+        SessionLib::set('user', $request->getPost(['email']));
+        $this->viewCollectionService->addView(view('user/login'));
+        return $this->viewCollectionService;
+    }
+
+
+    /**
+     * GET user/login
+     *
+     * @return ViewCollectionService
+     */
+    public function logout(Request $request){
+
+        SessionLib::remove('user');
+        $this->viewCollectionService->addView(view('user/login'));
         return $this->viewCollectionService;
     }
 
@@ -69,39 +113,38 @@ class User extends BaseController
                 'password' => 'required|min_length[12]',
             ]
         )->withRequest($request)->run()){
-            echo 'ancuk';
-            return;
+            SessionLib::setFlashdata(self::WARNING_KEY_MESSAGE, ['The data you are registering is not valid']);
+            return RedirectLib::redirect('user/register');
         }
-        // echo json_encode($request->getPost());
         if(!$this->isPasswordValid($request->getPost('password'))){
-            echo 'password gagal';
-            die();
+            SessionLib::setFlashdata(self::WARNING_KEY_MESSAGE, ['Password is invalid']);
+            return RedirectLib::redirect('user/register');
         }
-        
-        //  withRequest(>request)->run();
-        // if (! $this->validate()->withRe) {
-        //     echo "not valid email";
-        // }®
+        SessionLib::setFlashdata(self::SUCCESS_KEY_MESSAGE, ['You are registered']);
+        return RedirectLib::redirect('user/login');
         
     }
 
     public function create(Request $request){
         $post = $request->getPost();
         $user = new EntitiesUser();
-        $user->setFirstName('andik');
-        $user->setLastName('aryanto');
-        $user->setEmail('andikaryanto@andik.com');
-        echo json_encode($this->userRepository->createUser($user));
+        $user->setFirstName($post['first_name']);
+        $user->setLastName($post['last_name']);
+        $user->setEmail($post['email']);
+        $this->userRepository->createUser($user);
+        SessionLib::setFlashdata(self::SUCCESS_KEY_MESSAGE, ['Data saved']);
+        return RedirectLib::redirect('user');
     }
 
 
     public function update(Request $request){
         $post = $request->getPost();
         $user = new EntitiesUser();
-        $user->setId('62a23256dd24f00a3046cbc8');
-        $user->setFirstName('andik');
-        $user->setLastName('aryanto');
-        echo json_encode($this->userRepository->updateUser($user));
+        $user->setId($post['id']);
+        $user->setFirstName($post['first_name']);
+        $user->setLastName($post['last_name']);
+        SessionLib::setFlashdata(self::SUCCESS_KEY_MESSAGE, ['Data updated']);
+        return RedirectLib::redirect('user');
     }
 
 

@@ -1,39 +1,7 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?= base_url('assets/css/styles.css')?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/animate.css') ?>">
-    <script type="text/javascript" src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
-    <title>Amanah Mart - ADMIN</title>
-  </head>
+  </div>
+  <!-- JAVASCRIPT -->
 
-<body class="bg-white">
-    <div class="auth-container">
-        <!-- <div class="text-center">
-            <img src="<?= base_url('assets/images/logo.png') ?>" width="160" class="img-fluid" alt="">
-        </div> -->
-        
-        <h4 class="my-4">Register User</h4>
-
-        <form action="<?= base_url('user/do_register')?>" method="POST">
-            <div class="form-inline-group left-i mb-3">
-                <i class="icon-icon-awesome-user-circle in-left"></i>
-                <input type="email" class="form-control" placeholder="Email" name = "email">
-            </div>
-            <div class="form-inline-group left-i mb-3">
-                <i class="icon-icon-awesome-lock in-left"></i>
-                <input type="password" class="form-control" placeholder="Password" name = "password">
-            </div>
-            <button type="submit" class="btn btn-primary px-5 mt-4">Register</button>
-        </form>
-    </div>
-</body>
-
-</html>
-<script type="text/javascript" src="<?= base_url('assets/js/popper.min.js') ?>"></script>
+  <script type="text/javascript" src="<?= base_url('assets/js/popper.min.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('assets/js/select2.full.min.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('assets/js/jquery.dataTables.min.js') ?>"></script>
@@ -47,7 +15,41 @@
   <script type="text/javascript" src="<?= base_url('assets/js/all.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('assets/js/mainapp.js') ?>"></script>
   <script type="text/javascript" src="<?= base_url('assets/js/bootstrap-notify.js') ?>"></script>
-<script>
+  <script>
+      $('.datepicker').datepicker({
+          format: "dd-mm-yyyy",
+      });
+  </script>
+  </body>
+
+  </html>
+  <?php
+
+    // clear form flash Data
+
+                                        use Ci4Common\Libraries\CommonLib;
+
+  session()->getFlashData('dataform');
+    ?>
+  <script>
+      $(document).ready(function() {
+          // $('#summernote').summernote();
+          // $('#summernote-1').summernote();
+          // $('#summernote-2').summernote();
+          // $('#summernote-3').summernote();
+          // $('#summernote-4').summernote();
+          //   $('.summernote').summernote();
+      });
+  </script>
+  </script>
+  <script>
+      $('.btn-toggle-sidebar').click(function() {
+          $('.sidebar').toggleClass('show')
+          $('.sidebar-toggle').toggleClass('show')
+      })
+  </script>
+
+  <script>
       $(document).ready(function(e) {
           initiate();
       });
@@ -55,9 +57,6 @@
       function initiate() {
 
         <?php
-
-                        use Ci4Common\Libraries\CommonLib;
-
         $key = CommonLib::encryptMd5(CommonLib::getKey() . 'success_msg');
         if (session()->get($key)) {
             $msg = session()->getFlashData($key);

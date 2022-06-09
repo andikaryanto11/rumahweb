@@ -33,10 +33,12 @@ $routes->setAutoRoute(false);
 // route since we don't have to scan directories.
 $routes->get('/', 'home.controller:index');
 $routes->get('/user', 'user.controller:index');
+$routes->get('/user/login', 'user.controller:login');
+$routes->get('/user/logout', 'user.controller:logout');
 $routes->get('/user/register', 'user.controller:register');
 $routes->post('/user/do_register', 'user.controller:doRegister');
-$routes->get('/user/create', 'user.controller:create');
-$routes->get('/user/update', 'user.controller:update');
-$routes->get('/user/delete', 'user.controller:delete');
+$routes->post('/user/create', 'user.controller:create');
+$routes->put('/user/update', 'user.controller:update');
+$routes->delete('/user/delete', 'user.controller:delete');
 
 return $routes;
