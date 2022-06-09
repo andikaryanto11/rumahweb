@@ -12,7 +12,7 @@ class UserRepository extends BaseRepository {
         parent::__construct(User::class);
     }
 
-    public function createUser(User $firstName, string $lastName, string $email){
+    public function createUser(string $firstName, string $lastName, string $email){
         $body = [
             'firstName' => $firstName,
             'lastName' => $lastName,
