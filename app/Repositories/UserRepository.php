@@ -12,26 +12,26 @@ class UserRepository extends BaseRepository {
         parent::__construct(User::class);
     }
 
-    public function createUser(string $firstName, string $lastName, string $email){
+    public function createUser(User $user){
         $body = [
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-            'email' => $email
+            'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
+            'email' => $user->getEmail()
         ];
         return $this->post('user/create', $body);
     }
 
-    public function updateUser(string $id, string $firstName, string $lastName){
+    public function updateUser(User $user){
         $body = [
-            'firstName' => $firstName,
-            'lastName' => $lastName
+            'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
         ];
        
-        return $this->put('user/' . $id, $body);
+        return $this->put('user/' . $user->getId(), $body);
     }
 
     public function deletUser(string $id){
        
-        return $this->delete('user/' . $id);
+        return $this->delete('user/' . $id());
     }
 }

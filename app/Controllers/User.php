@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Entities\User as EntitiesUser;
 use App\Repositories\UserRepository;
 use Ci4Common\Services\ViewCollectionService;
 use App\Override\Request;
@@ -86,13 +87,21 @@ class User extends BaseController
 
     public function create(Request $request){
         $post = $request->getPost();
-        echo json_encode($this->userRepository->createUser('andik', 'aryanto', 'andikaryanto@andik.com'));
+        $user = new EntitiesUser();
+        $user->setFirstName('andik');
+        $user->setLastName('aryanto');
+        $user->setEmail('andikaryanto@andik.com');
+        echo json_encode($this->userRepository->createUser($user));
     }
 
 
     public function update(Request $request){
         $post = $request->getPost();
-        echo json_encode($this->userRepository->updateUser('62a23256dd24f00a3046cbc8', 'andikaaa', 'aryantoooo'));
+        $user = new EntitiesUser();
+        $user->setId('62a23256dd24f00a3046cbc8');
+        $user->setFirstName('andik');
+        $user->setLastName('aryanto');
+        echo json_encode($this->userRepository->updateUser($user));
     }
 
 
