@@ -41,7 +41,12 @@ class User extends BaseController
         $this->validator = \Config\Services::validation();
     }
 
-    public function index(Request $request)
+    /**
+     * GET user
+     *
+     * @return ViewCollectionService
+     */
+    public function index(Request $request): ViewCollectionService
     {   
         if(!SessionLib::get('user')){
             return RedirectLib::redirect('user/login');
@@ -67,7 +72,7 @@ class User extends BaseController
      *
      * @return ViewCollectionService
      */
-    public function register(){
+    public function register(): ViewCollectionService{
         
         $this->viewCollectionService->addView(view('user/register'));
         return $this->viewCollectionService;
@@ -78,7 +83,7 @@ class User extends BaseController
      *
      * @return ViewCollectionService
      */
-    public function login(Request $request){
+    public function login(Request $request): ViewCollectionService {
 
         if(SessionLib::get('user')){
             return RedirectLib::redirect('user');
@@ -90,11 +95,11 @@ class User extends BaseController
 
 
     /**
-     * GET user/login
+     * GET user/logout
      *
      * @return ViewCollectionService
      */
-    public function logout(Request $request){
+    public function logout(Request $request): ViewCollectionService{
 
         SessionLib::remove('user');
         $this->viewCollectionService->addView(view('user/login'));
@@ -104,7 +109,7 @@ class User extends BaseController
     /**
      * POST user/do_register
      *
-     * @return void
+     * @return RedirectLib
      */
     public function doRegister(Request $request){
         if(!$this->validator->setRules(
@@ -125,7 +130,12 @@ class User extends BaseController
         
     }
 
-    public function create(Request $request){
+    /**
+     * POST user/create
+     *
+     * @return RedirectLib
+     */
+    public function create(Request $request): RedirectLib{
         $post = $request->getPost();
         $user = new EntitiesUser();
         $user->setFirstName($post['first_name']);
@@ -136,8 +146,12 @@ class User extends BaseController
         return RedirectLib::redirect('user');
     }
 
-
-    public function update(Request $request){
+    /**
+     * POST user/update
+     *
+     * @return RedirectLib
+     */
+    public function update(Request $request): RedirectLib{
         $post = $request->getPost();
         $user = new EntitiesUser();
         $user->setId($post['id']);
@@ -148,12 +162,25 @@ class User extends BaseController
     }
 
 
-    public function delete(Request $request){
+    /**
+     * POST user/delete
+     *
+     * @return RedirectLib
+     */
+
+     public function delete(Request $request): RedirectLib {
         $post = $request->getPost();
         echo json_encode($this->userRepository->deletUser('62a23256dd24f00a3046cbc8'));
+        return RedirectLib::redirect('user');
     }
 
-    public function isPasswordValid($password){
+    /**
+     * validate a password to meet requirements
+     *
+     * @param string $password
+     * @return boolean
+     */
+    public function isPasswordValid(string $password): bool {
         echo $password;
         $match = null;
         $result = preg_match("/(?=.{12,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])/", $password, $match);

@@ -5,6 +5,7 @@ namespace App\Repositories;
 use Ci4Common\Libraries\CurlLib;
 use Ci4Orm\Repository\Repository;
 use DateTime;
+use stdClass;
 
 class BaseRepository extends Repository {
 
@@ -83,11 +84,18 @@ class BaseRepository extends Repository {
      * @param array $params
      * @return array
      */
-    public function get(string $path, array $params = []){
+    public function get(string $path, array $params = []) {
         return $this->fetch($path, $params);
     }
 
-    public function post(string $path, array $body){
+    /**
+     * Post data to end point
+     *
+     * @param string $path
+     * @param array $body
+     * @return stdClass
+     */
+    public function post(string $path, array $body): stdClass{
         $curl = new CurlLib(self::DUMMYAPI_URL . $path);
         $curl->method('POST');
         $curl->httpVersion();
@@ -99,7 +107,14 @@ class BaseRepository extends Repository {
         return $results;
     }
 
-    public function put(string $path, array $body){
+    /**
+     * update existing data
+     *
+     * @param string $path
+     * @param array $body
+     * @return stdClass
+     */
+    public function put(string $path, array $body): stdClass{
         $curl = new CurlLib(self::DUMMYAPI_URL . $path);
         $curl->method('PUT');
         $curl->httpVersion();
@@ -111,7 +126,13 @@ class BaseRepository extends Repository {
         return $results;
     }
 
-
+    /**
+     * delete a data
+     *
+     * @param string $path
+     * @param array $body
+     * @return stdClass
+     */
     public function delete(string $path){
         $curl = new CurlLib(self::DUMMYAPI_URL . $path);
         $curl->method('DELETE');

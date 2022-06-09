@@ -12,6 +12,12 @@ class UserRepository extends BaseRepository {
         parent::__construct(User::class);
     }
 
+    /**
+     * Create new User
+     *
+     * @param User $user
+     * @return void
+     */
     public function createUser(User $user){
         $body = [
             'firstName' => $user->getFirstName(),
@@ -21,6 +27,12 @@ class UserRepository extends BaseRepository {
         return $this->post('user/create', $body);
     }
 
+    /**
+     * Update existing user
+     *
+     * @param User $user
+     * @return void
+     */
     public function updateUser(User $user){
         $body = [
             'firstName' => $user->getFirstName(),
@@ -30,6 +42,12 @@ class UserRepository extends BaseRepository {
         return $this->put('user/' . $user->getId(), $body);
     }
 
+    /**
+     * delet user by id
+     *
+     * @param string $id
+     * @return void
+     */
     public function deletUser(string $id){
        
         return $this->delete('user/' . $id());
