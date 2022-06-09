@@ -1,0 +1,1 @@
+cp default/bootstrap.php vendor/codeigniter4/framework/system/bootstrap.php

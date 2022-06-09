@@ -2,7 +2,9 @@
 
 namespace Config;
 
-use CodeIgniter\Config\BaseService;
+use App\Override\Request;
+use Ci4Common\Config\Services as ConfigServices;
+use CodeIgniter\HTTP\UserAgent;
 
 /**
  * Services Configuration file.
@@ -17,16 +19,26 @@ use CodeIgniter\Config\BaseService;
  * method format you should use for your service methods. For more examples,
  * see the core Services file at system/Config/Services.php.
  */
-class Services extends BaseService
+class Services extends ConfigServices
 {
-    /*
-     * public static function example($getShared = true)
-     * {
-     *     if ($getShared) {
-     *         return static::getSharedInstance('example');
-     *     }
+    /**
      *
-     *     return new \CodeIgniter\Example();
-     * }
+     * @param boolean $getShared
+     * @return Request
      */
+    public static function request(App $config = null, bool $getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('request', $config);
+        }
+
+        $config = $config ?? config('App');
+
+        return new Request(
+            $config,
+            static::uri(),
+            'php://input',
+            new UserAgent()
+        );
+    }
 }
