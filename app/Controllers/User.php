@@ -70,16 +70,29 @@ class User extends BaseController
     /**
      * GET user/login
      *
-     * @return ViewCollectionService
+     * @return
      */
-    public function login(Request $request): ViewCollectionService {
+    public function login(Request $request) {
 
+
+        $session = SessionLib::get('user');
         if(SessionLib::get('user')){
             return RedirectLib::redirect('user');
         }
-        SessionLib::set('user', $request->getPost(['email']));
         $this->viewCollectionService->addView(view('user/login'));
         return $this->viewCollectionService;
+    }
+
+
+    /**
+     * GET user/login
+     *
+     * @return
+     */
+    public function doLogin(Request $request) {
+
+        SessionLib::set('user', ['email' => $request->getPost('email')]);
+        return RedirectLib::redirect('user');
     }
 
 
@@ -90,7 +103,7 @@ class User extends BaseController
      */
     public function logout(Request $request): ViewCollectionService{
 
-        SessionLib::remove('user');
+        SessionLib::destroy();
         $this->viewCollectionService->addView(view('user/login'));
         return $this->viewCollectionService;
     }

@@ -27,6 +27,9 @@
                 <i class="icon-icon-awesome-lock in-left"></i>
                 <input type="password" class="form-control" placeholder="Password" name = "password">
             </div>
+            <div class="form-inline-group left-i mb-3">
+              <a href="<?= base_url('user/login')?>">Login</a>
+            </div>
             <button type="submit" class="btn btn-primary px-5 mt-4">Register</button>
         </form>
     </div>

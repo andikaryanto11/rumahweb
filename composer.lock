@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/andikaryanto11/Ci4Common.git",
-                "reference": "212d7a944a635c00a41d1615a4b945599556dceb"
+                "reference": "089cbe1841952a8174977c43a3e59190cf06ab1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andikaryanto11/Ci4Common/zipball/212d7a944a635c00a41d1615a4b945599556dceb",
-                "reference": "212d7a944a635c00a41d1615a4b945599556dceb",
+                "url": "https://api.github.com/repos/andikaryanto11/Ci4Common/zipball/089cbe1841952a8174977c43a3e59190cf06ab1a",
+                "reference": "089cbe1841952a8174977c43a3e59190cf06ab1a",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "issues": "https://github.com/andikaryanto11/Ci4Common/issues",
                 "source": "https://github.com/andikaryanto11/Ci4Common/tree/main"
             },
-            "time": "2022-06-09T18:39:53+00:00"
+            "time": "2022-06-10T05:31:42+00:00"
         },
         {
             "name": "andikaryanto11/ci4orm",

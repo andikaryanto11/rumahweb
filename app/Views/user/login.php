@@ -18,7 +18,7 @@
         
         <h4 class="my-4">Login User</h4>
 
-        <form action="<?= base_url('user/do_register')?>" method="POST">
+        <form action="<?= base_url('user/do_login')?>" method="POST">
             <div class="form-inline-group left-i mb-3">
                 <i class="icon-icon-awesome-user-circle in-left"></i>
                 <input type="email" class="form-control" placeholder="Email" name = "email">
@@ -26,6 +26,9 @@
             <div class="form-inline-group left-i mb-3">
                 <i class="icon-icon-awesome-lock in-left"></i>
                 <input type="password" class="form-control" placeholder="Password" name = "password">
+            </div>
+            <div class="form-inline-group left-i mb-3">
+              <a href="<?= base_url('user/register')?>">Register</a>
             </div>
             <button type="submit" class="btn btn-primary px-5 mt-4">Login</button>
         </form>

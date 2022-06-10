@@ -31,9 +31,10 @@ $routes->setAutoRoute(false);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'home.controller:index');
-$routes->get('/user', 'user.controller:index');
+$routes->get('/', 'user.controller:login');
+$routes->get('/user', 'user.controller:index', ['filter' => 'AuthenticateWeb']);
 $routes->get('/user/login', 'user.controller:login');
+$routes->post('/user/do_login', 'user.controller:doLogin');
 $routes->get('/user/logout', 'user.controller:logout');
 $routes->get('/user/register', 'user.controller:register');
 $routes->post('/user/do_register', 'user.controller:doRegister');
