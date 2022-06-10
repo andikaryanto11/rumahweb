@@ -148,6 +148,11 @@ class User extends BaseController
             SessionLib::setFlashdata(self::WARNING_KEY_MESSAGE, ['Password is invalid']);
             return RedirectLib::redirect('user/register');
         }
+
+        if(!$this->isEmailValid($request->getPost('email'))){
+            SessionLib::setFlashdata(self::WARNING_KEY_MESSAGE, ['Email is invalid']);
+            return RedirectLib::redirect('user/register');
+        }
         SessionLib::setFlashdata(self::SUCCESS_KEY_MESSAGE, ['You are registered']);
         return RedirectLib::redirect('user/login');
         
@@ -255,9 +260,21 @@ class User extends BaseController
      * @return boolean
      */
     public function isPasswordValid(string $password): bool {
-        echo $password;
         $match = null;
         $result = preg_match("/(?=.{12,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])/", $password, $match);
+        // echo $result;
+        return $result !== false && $result !== 0;
+    }
+
+    /**
+     * validate a email to meet requirements
+     *
+     * @param string $email
+     * @return boolean
+     */
+    public function isEmailValid(string $email): bool {
+        $match = null;
+        $result = preg_match("/@rumahweb.co.id/", $email, $match);
         // echo $result;
         return $result !== false && $result !== 0;
     }
