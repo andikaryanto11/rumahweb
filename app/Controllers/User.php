@@ -49,19 +49,7 @@ class User extends BaseController
      */
     public function index(Request $request): ViewCollectionService
     {   
-        if(!SessionLib::get('user')){
-            return RedirectLib::redirect('user/login');
-        }
-        $page = $request->getGet('page') != null ? $request->getGet('page') : 1;
-        $limit = $request->getGet('limit') != null ? $request->getGet('limit') : 20;
-        $param = [
-            'page' => $page,
-            'limit' => $limit,
-        ];
-        $users = $this->userRepository->get('user', $param);
-        // foreach($users as $user){
-        //     echo $user->getId();
-        // }
+      
         $this->viewCollectionService->addView(view('shared/header'));
         $this->viewCollectionService->addView(view('user/index'));
         $this->viewCollectionService->addView(view('shared/footer'));
