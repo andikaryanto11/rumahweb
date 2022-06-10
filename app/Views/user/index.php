@@ -105,20 +105,18 @@
 
      function deleteItem(selectedData) {
           $.ajax({
-               url: "<?= base_url('user'); ?>" + "/" + selectedData[0],
+               url: "<?= base_url('user/delete'); ?>" + "/" + selectedData[1],
                type: "DELETE",
                dataType: "json",
                success: function(status) {
-                    if (status.Response.Code == 2012) {
-                         window.location = base_url + 'Forbidden';
-                    } else if (!status.Response.Code == 2013) {
+                    console.log(status);
+                    if (!status.Response == "OK") {
                          var message = status.Message;
-                         // setNotification(message, 3, "bottom", "right");
+                         setNotification(message, 3, "bottom", "right");
                     } else {
                          var message = status.Message;
-                         // setNotification(message, 2, "bottom", "right");
+                         setNotification(message, 2, "bottom", "right");
 
-                         window.location.reload();
                     }
 
                }

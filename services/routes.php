@@ -41,6 +41,6 @@ $routes->post('/user/create', 'user.controller:create');
 $routes->put('/user/update', 'user.controller:update');
 $routes->post('/user/list', 'user.controller:list');
 $routes->post('/user/edit/(:any)', 'user.controller:edit');
-$routes->delete('/user/delete', 'user.controller:delete');
+$routes->delete('/user/delete/(:any)', 'user.controller:delete');
 
 return $routes;

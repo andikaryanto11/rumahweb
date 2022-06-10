@@ -173,15 +173,18 @@ class User extends BaseController
 
 
     /**
-     * POST user/delete
+     * DELETE user/delete
      *
-     * @return RedirectLib
      */
 
-     public function delete(Request $request): RedirectLib {
-        $post = $request->getPost();
-        echo json_encode($this->userRepository->deletUser('62a23256dd24f00a3046cbc8'));
-        return RedirectLib::redirect('user');
+     public function delete(Request $request, $id) {
+      
+        $this->userRepository->delete($id);
+        $return   = [
+            'Message' => 'Success deleting data',
+            'Response' => 'OK'
+        ];
+        echo json_encode($return);
     }
 
 
