@@ -52,4 +52,17 @@ class UserRepository extends BaseRepository {
        
         return $this->delete('user/' . $id());
     }
+
+
+
+    /**
+     * delet user by id
+     *
+     * @param string $id
+     * @return void
+     */
+    public function getUserById(string $id){
+       
+        return $this->getById('user/' . $id);
+    }
 }

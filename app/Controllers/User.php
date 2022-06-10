@@ -6,6 +6,7 @@ use App\Entities\User as EntitiesUser;
 use App\Repositories\UserRepository;
 use Ci4Common\Services\ViewCollectionService;
 use App\Override\Request;
+use Ci4Common\Libraries\HtmlLib;
 use Ci4Common\Libraries\RedirectLib;
 use Ci4Common\Libraries\SessionLib;
 
@@ -62,7 +63,7 @@ class User extends BaseController
         //     echo $user->getId();
         // }
         $this->viewCollectionService->addView(view('shared/header'));
-        $this->viewCollectionService->addView(view('user/index', compact('users')));
+        $this->viewCollectionService->addView(view('user/index'));
         $this->viewCollectionService->addView(view('shared/footer'));
         return $this->viewCollectionService;
     }
@@ -104,6 +105,27 @@ class User extends BaseController
         SessionLib::remove('user');
         $this->viewCollectionService->addView(view('user/login'));
         return $this->viewCollectionService;
+    }
+
+    /**
+     * Get data edit
+     * GET user/edit
+     *
+     */
+    public function edit(Request $request, $id)
+    {
+        $model    = $this->userRepository->getUserById($id);
+        $HtmlEdit = view('user/edit', compact('model'));
+        $return   = [
+            'Message'  => 'Sukses',
+            'Data'     => [
+                'Model' => $model,
+                'Html'  => $HtmlEdit,
+            ],
+            'Response' => 'OK'
+        ];
+        echo json_encode($return);
+    
     }
 
     /**
@@ -172,6 +194,54 @@ class User extends BaseController
         $post = $request->getPost();
         echo json_encode($this->userRepository->deletUser('62a23256dd24f00a3046cbc8'));
         return RedirectLib::redirect('user');
+    }
+
+
+    /**
+     * POST user/list
+     *     * @return RedirectLib
+     */
+
+    public function list(Request $request) {
+        $page = $request->getPost('start') /  $request->getPost('length') + 1;
+        $limit = $request->getPost('length') != null ? $request->getPost('length') : 20;
+        $param = [
+            'page' => $page,
+            'limit' => $limit,
+        ];
+        $additional = null;
+        $users = $this->userRepository->get('user', $param, $additional);
+
+        $output = [];
+        $output['draw']            = !empty($request->getPost('draw')) ? intval($request->getPost('draw')) : 0;
+        $output['recordsTotal']    = intval($additional['total']);
+        $output['recordsFiltered'] = intval($additional['total']);
+        $output['data']            = [];
+        foreach($users as $user){
+
+            $action = HtmlLib::formLink('<i class="icon-fi-sr-pencil"></i>', [
+                'href'        => '#edit',
+                'class'       => 'btn btn-action btn-sm edit',
+                'data-toggle' => 'modal',
+            ]) .
+
+            HtmlLib::formLink('<i class="icon-fi-sr-trash"></i>', [
+                            'href'        => '#',
+                            'class'       => 'btn btn-action btn-sm delete',
+                            'data-toggle' => 'modal',
+            ]);
+
+            $userDatatable = [
+                0 => '',
+                1 => $user->getId(),
+                2 => $user->getTitle(),
+                3 => $user->getFirstName(),
+                4 => $user->getLastName(),
+                5 => $action
+            ];
+            $output['data'][] = $userDatatable;
+        }
+        echo json_encode($output);
     }
 
     /**

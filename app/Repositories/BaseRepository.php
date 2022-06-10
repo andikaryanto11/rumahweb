@@ -24,7 +24,15 @@ class BaseRepository extends Repository {
         $curl->addHeader('app-id', self::DUMMYAPI_APP_ID);
         $resultString = $curl->exec();
         $results = json_decode($resultString);
-        return $this->setToEntity($results->data);
+        $data = $this->setToEntity($results->data);
+        return [
+          'data' => $data,
+          'additional' => [
+            'page' => $results->page,
+            'total' => $results->total,
+            'limit' => $results->limit
+          ]
+        ];
     }
 
     /**
@@ -84,8 +92,10 @@ class BaseRepository extends Repository {
      * @param array $params
      * @return array
      */
-    public function get(string $path, array $params = []) {
-        return $this->fetch($path, $params);
+    public function get(string $path, array $params = [], &$additionalReturnData = null) {
+        $data = $this->fetch($path, $params);
+        $additionalReturnData = $data['additional'];
+        return $data['data'];
     }
 
     /**
@@ -142,6 +152,18 @@ class BaseRepository extends Repository {
         $resultString = $curl->exec();
         $results = json_decode($resultString);
         return $results;
+    }
+
+    public function getById(string $path){
+
+        $curl = new CurlLib(self::DUMMYAPI_URL . $path);
+        $curl->method('GET');
+        $curl->httpVersion();
+        $curl->addHeader('app-id', self::DUMMYAPI_APP_ID);
+        $resultString = $curl->exec();
+        $results = json_decode($resultString);
+        $data = $this->setToEntity([$results]);
+        return $data[0];
     }
 
 }

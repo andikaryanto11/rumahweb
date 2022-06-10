@@ -25,9 +25,10 @@
                </div>
           </div>
           <div class="main-content-inner-child">
-               <table id="tableCity" class="table table-main nowrap" style="width:100%">
+               <table id="tableUser" class="table table-main nowrap" style="width:100%">
                     <thead>
-                         <tr>
+                         <tr>  
+                              <td scope="col">#</td>
                               <td scope="col" class="text-2 medium disabled-sorting">Id</td>
                               <td scope="col" class="text-2 medium">Title</td>
                               <td scope="col" class="text-2 medium">First Name</td>
@@ -35,21 +36,7 @@
                               <td scope="col" class="text-2 medium text-center disabled-sorting">Action</td>
                          </tr>
                     </thead>
-                    <thead>
-                        <?php 
-                            foreach($users as $user) {
-                        ?>
-                         <tr>
-                              <td scope="col" class="text-2 medium disabled-sorting"><?= $user->getId() ?></td>
-                              <td scope="col" class="text-2 medium"><?= $user->getTitle() ?></td>
-                              <td scope="col" class="text-2 medium"><?= $user->getFirstName() ?></td>
-                              <td scope="col" class="text-2 medium"><?= $user->getLastName() ?></td>
-                              <td scope="col" class="text-2 medium text-center disabled-sorting">Action</td>
-                         </tr>
-                        <?php 
-                            }
-                        ?>
-                    </thead>
+                   
 
                </table>
           </div>
@@ -97,3 +84,114 @@
 </div>
 <!-- Modal Edit End -->
 
+
+<script>
+     $(document).ready(function() {
+
+          // init();
+          dataTable();
+     });
+
+
+     var table = null;
+     var selectedData = null;
+
+     $("#btnDeleteCity").on("click", function() {
+          if (selectedData != null) {
+               deleteItem(selectedData);
+
+          }
+     })
+
+     function deleteItem(selectedData) {
+          $.ajax({
+               url: "<?= base_url('user'); ?>" + "/" + selectedData[0],
+               type: "DELETE",
+               dataType: "json",
+               success: function(status) {
+                    if (status.Response.Code == 2012) {
+                         window.location = base_url + 'Forbidden';
+                    } else if (!status.Response.Code == 2013) {
+                         var message = status.Message;
+                         // setNotification(message, 3, "bottom", "right");
+                    } else {
+                         var message = status.Message;
+                         // setNotification(message, 2, "bottom", "right");
+
+                         window.location.reload();
+                    }
+
+               }
+          });
+     }
+
+
+     function getTableIndex(dtTable) {
+          table = dtTable;
+          table.on('click', '.edit', function() {
+               $tr = $(this).closest('tr');
+               var data = table.row($tr).data();
+               id = data[0];
+
+               $.ajax({
+                    url: "<?= base_url('user/edit') ?>" + "/" + data[1],
+                    type: "POST",
+                    dataType: "json",
+                    success: function(result) {
+                         console.log(result);
+                         if (result.Response == 'OK') {
+                              $('#bodyEditCity').html(result.Data.Html);
+                         }
+
+                    },
+                    error: function(e) {
+                         console.log(e)
+                    }
+
+               })
+          });
+
+          table.on('click', '.delete', function() {
+               $tr = $(this).closest('tr');
+               var data = table.row($tr).data();
+               selectedData = data;
+               deleteItem(selectedData);
+
+          });
+
+     }
+
+     function dataTable() {
+          var sourceData = "<?= base_url('user/list'); ?>";
+          var caption = "";
+          var columns = [{
+                    responsivePriority: 6
+               },
+               {
+                    responsivePriority: 1
+               },
+               {
+                    responsivePriority: 2
+               },
+               {
+                    responsivePriority: 3
+               }, {
+                    responsivePriority: 4
+               },{
+                    responsivePriority: 5
+               },
+          ];
+          loadIndexDataTable("tableUser", sourceData, caption, null, columns, getTableIndex, "<?= base_url('/'); ?>");
+
+
+     }
+     // $(document).ready(function() {
+     //     $('#example').DataTable({
+     //         language: {
+     //             search: "_INPUT_",
+     //             searchPlaceholder: "Search records"
+     //         },
+     //         "lengthChange": false
+     //     });
+     // });
+</script>

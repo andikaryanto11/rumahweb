@@ -39,6 +39,8 @@ $routes->get('/user/register', 'user.controller:register');
 $routes->post('/user/do_register', 'user.controller:doRegister');
 $routes->post('/user/create', 'user.controller:create');
 $routes->put('/user/update', 'user.controller:update');
+$routes->post('/user/list', 'user.controller:list');
+$routes->post('/user/edit/(:any)', 'user.controller:edit');
 $routes->delete('/user/delete', 'user.controller:delete');
 
 return $routes;
